@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import {
   Card,
@@ -12,15 +13,17 @@ import {
   TableRow,
   TableCell,
   BadgeDelta,
+  DonutChart,
+  Legend,
 } from "@tremor/react";
+import { LogOut } from "lucide-react";
+import { site } from "@/lib/site";
 import { createClient } from "@/utils/supabase/server";
 
-// Currency formatter for USD.
+export const metadata = { title: "Dashboard" };
+
 const usd = (n: number) =>
-  new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(n);
+  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(n);
 
 const pct = (n: number) =>
   new Intl.NumberFormat("en-US", {
@@ -41,14 +44,10 @@ type HoldingRow = {
 export default async function DashboardPage() {
   const supabase = createClient();
 
-  // Belt-and-suspenders: middleware already protects this route, but we
-  // re-check here so the page never renders for a logged-out user.
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) {
-    redirect("/login");
-  }
+  if (!user) redirect("/login");
 
   // RLS guarantees this only returns THIS investor's holdings.
   const { data, error } = await supabase
@@ -58,34 +57,52 @@ export default async function DashboardPage() {
 
   const holdings = (data ?? []) as unknown as HoldingRow[];
 
-  // KPI calculations.
-  const marketValue = holdings.reduce(
-    (sum, h) => sum + h.quantity * h.current_price,
-    0,
-  );
-  const costBasis = holdings.reduce(
-    (sum, h) => sum + h.quantity * h.cost_basis,
-    0,
-  );
+  const marketValue = holdings.reduce((s, h) => s + h.quantity * h.current_price, 0);
+  const costBasis = holdings.reduce((s, h) => s + h.quantity * h.cost_basis, 0);
   const gainLoss = marketValue - costBasis;
   const gainLossPct = costBasis > 0 ? gainLoss / costBasis : 0;
 
+  const allocation = holdings
+    .map((h) => ({ name: h.symbol, value: h.quantity * h.current_price }))
+    .sort((a, b) => b.value - a.value);
+
   return (
-    <main className="min-h-screen bg-gray-50 p-6 md:p-10">
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-8 flex items-center justify-between">
-          <div>
-            <Title>Portfolio Dashboard</Title>
-            <Text>Signed in as {user.email}</Text>
+    <div className="min-h-screen bg-cream">
+      {/* Top bar */}
+      <header className="border-b border-navy-100 bg-white">
+        <div className="container-page flex h-16 items-center justify-between">
+          <Link href="/" className="flex items-center gap-2.5">
+            <span className="flex h-8 w-8 items-center justify-center rounded-sm bg-navy-900 font-serif text-base font-bold text-gold-300">
+              U
+            </span>
+            <span className="font-serif text-lg font-bold text-navy-900">
+              {site.name}
+            </span>
+          </Link>
+          <div className="flex items-center gap-4">
+            <span className="hidden text-sm text-navy-500 sm:inline">
+              {user.email}
+            </span>
+            <form action="/auth/signout" method="post">
+              <button
+                type="submit"
+                className="inline-flex items-center gap-1.5 rounded-md border border-navy-200 bg-white px-3 py-1.5 text-sm font-medium text-navy-700 transition-colors hover:bg-navy-50"
+              >
+                <LogOut className="h-4 w-4" /> Sign out
+              </button>
+            </form>
           </div>
-          <form action="/auth/signout" method="post">
-            <button
-              type="submit"
-              className="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
-            >
-              Sign out
-            </button>
-          </form>
+        </div>
+      </header>
+
+      <main className="container-page py-10">
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold text-navy-900">
+            Portfolio Dashboard
+          </h1>
+          <p className="mt-1 text-sm text-navy-500">
+            A real-time view of your holdings and performance.
+          </p>
         </div>
 
         {error && (
@@ -95,79 +112,98 @@ export default async function DashboardPage() {
         )}
 
         {/* KPI cards */}
-        <Grid numItemsSm={2} numItemsLg={3} className="gap-6">
-          <Card>
+        <Grid numItemsSm={2} numItemsLg={4} className="gap-6">
+          <Card decoration="top" decorationColor="blue">
             <Text>Total Portfolio Value</Text>
-            <Metric>{usd(marketValue)}</Metric>
+            <Metric className="mt-2">{usd(marketValue)}</Metric>
           </Card>
-          <Card>
+          <Card decoration="top" decorationColor="slate">
             <Text>Total Cost Basis</Text>
-            <Metric>{usd(costBasis)}</Metric>
+            <Metric className="mt-2">{usd(costBasis)}</Metric>
           </Card>
-          <Card>
+          <Card decoration="top" decorationColor={gainLoss >= 0 ? "emerald" : "red"}>
             <div className="flex items-center justify-between">
               <Text>Total Gain / Loss</Text>
-              <BadgeDelta
-                deltaType={gainLoss >= 0 ? "increase" : "decrease"}
-              >
+              <BadgeDelta deltaType={gainLoss >= 0 ? "increase" : "decrease"}>
                 {pct(gainLossPct)}
               </BadgeDelta>
             </div>
-            <Metric>{usd(gainLoss)}</Metric>
+            <Metric className="mt-2">{usd(gainLoss)}</Metric>
+          </Card>
+          <Card decoration="top" decorationColor="amber">
+            <Text>Holdings</Text>
+            <Metric className="mt-2">{holdings.length}</Metric>
           </Card>
         </Grid>
 
-        {/* Holdings table */}
-        <Card className="mt-8">
-          <Title>Holdings</Title>
-          {holdings.length === 0 ? (
-            <Text className="mt-4">
-              No holdings found for your account yet.
-            </Text>
-          ) : (
-            <Table className="mt-4">
-              <TableHead>
-                <TableRow>
-                  <TableHeaderCell>Symbol</TableHeaderCell>
-                  <TableHeaderCell>Account</TableHeaderCell>
-                  <TableHeaderCell className="text-right">
-                    Quantity
-                  </TableHeaderCell>
-                  <TableHeaderCell className="text-right">
-                    Cost Basis
-                  </TableHeaderCell>
-                  <TableHeaderCell className="text-right">
-                    Price
-                  </TableHeaderCell>
-                  <TableHeaderCell className="text-right">
-                    Market Value
-                  </TableHeaderCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {holdings.map((h) => (
-                  <TableRow key={h.id}>
-                    <TableCell className="font-medium">{h.symbol}</TableCell>
-                    <TableCell>{h.accounts?.name ?? "—"}</TableCell>
-                    <TableCell className="text-right">
-                      {h.quantity}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      {usd(h.cost_basis)}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      {usd(h.current_price)}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      {usd(h.quantity * h.current_price)}
-                    </TableCell>
+        {/* Allocation + table */}
+        <div className="mt-8 grid gap-6 lg:grid-cols-3">
+          <Card>
+            <Title>Allocation</Title>
+            <Text className="mt-1">By market value</Text>
+            {allocation.length === 0 ? (
+              <Text className="mt-6">No data to display.</Text>
+            ) : (
+              <>
+                <DonutChart
+                  className="mt-6 h-44"
+                  data={allocation}
+                  category="value"
+                  index="name"
+                  valueFormatter={usd}
+                  showAnimation
+                />
+                <Legend
+                  className="mt-6"
+                  categories={allocation.map((a) => a.name)}
+                />
+              </>
+            )}
+          </Card>
+
+          <Card className="lg:col-span-2">
+            <Title>Holdings</Title>
+            {holdings.length === 0 ? (
+              <Text className="mt-4">No holdings found for your account yet.</Text>
+            ) : (
+              <Table className="mt-4">
+                <TableHead>
+                  <TableRow>
+                    <TableHeaderCell>Symbol</TableHeaderCell>
+                    <TableHeaderCell>Account</TableHeaderCell>
+                    <TableHeaderCell className="text-right">Qty</TableHeaderCell>
+                    <TableHeaderCell className="text-right">Cost</TableHeaderCell>
+                    <TableHeaderCell className="text-right">Price</TableHeaderCell>
+                    <TableHeaderCell className="text-right">
+                      Market Value
+                    </TableHeaderCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          )}
-        </Card>
-      </div>
-    </main>
+                </TableHead>
+                <TableBody>
+                  {holdings.map((h) => (
+                    <TableRow key={h.id}>
+                      <TableCell className="font-medium text-navy-900">
+                        {h.symbol}
+                      </TableCell>
+                      <TableCell>{h.accounts?.name ?? "—"}</TableCell>
+                      <TableCell className="text-right">{h.quantity}</TableCell>
+                      <TableCell className="text-right">
+                        {usd(h.cost_basis)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {usd(h.current_price)}
+                      </TableCell>
+                      <TableCell className="text-right font-medium">
+                        {usd(h.quantity * h.current_price)}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            )}
+          </Card>
+        </div>
+      </main>
+    </div>
   );
 }

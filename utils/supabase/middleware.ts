@@ -35,14 +35,11 @@ export async function updateSession(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
 
-  // Public paths that don't require a session.
-  const isPublic =
-    pathname === "/login" ||
-    pathname.startsWith("/auth") ||
-    pathname.startsWith("/_next") ||
-    pathname === "/favicon.ico";
+  // Only the portal is protected. The marketing site (/, /about, /services,
+  // /contact) and /login are public.
+  const isProtected = pathname.startsWith("/dashboard");
 
-  if (!user && !isPublic) {
+  if (!user && isProtected) {
     // Not logged in and trying to reach a protected route -> /login
     const url = request.nextUrl.clone();
     url.pathname = "/login";

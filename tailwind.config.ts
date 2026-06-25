@@ -11,7 +11,38 @@ const config: Config = {
     transparent: "transparent",
     current: "currentColor",
     extend: {
+      fontFamily: {
+        sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "sans-serif"],
+        serif: ["var(--font-serif)", "ui-serif", "Georgia", "serif"],
+      },
       colors: {
+        // Brand palette
+        navy: {
+          50: "#f0f5fa",
+          100: "#dae6f1",
+          200: "#b6cee3",
+          300: "#86accf",
+          400: "#5183b3",
+          500: "#356699",
+          600: "#28507b",
+          700: "#234164",
+          800: "#11294a",
+          900: "#0b1f3a",
+          950: "#061226",
+        },
+        gold: {
+          50: "#faf6ed",
+          100: "#f2e7cc",
+          200: "#e6cf9c",
+          300: "#d9b46a",
+          400: "#cda049",
+          500: "#bf8c3a",
+          600: "#a3712f",
+          700: "#82562a",
+          800: "#6c4628",
+          900: "#5d3c25",
+        },
+        cream: "#faf9f6",
         // light mode
         tremor: {
           brand: {
