@@ -1,0 +1,8 @@
+# Minimal Supabase CLI config. The project_id is just a local label.
+# When you run `npx supabase link`, the CLI connects this folder to your
+# remote project; `npx supabase db push` then applies migrations/.
+project_id = "investor-portal"
+
+[db]
+# Postgres major version of your Supabase project (Supabase uses 15).
+major_version = 15
