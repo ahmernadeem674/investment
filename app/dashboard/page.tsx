@@ -1,8 +1,6 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import {
   Card,
-  Grid,
   Table,
   TableHead,
   TableHeaderCell,
@@ -12,7 +10,6 @@ import {
   BadgeDelta,
 } from "@tremor/react";
 import {
-  LogOut,
   Wallet,
   Receipt,
   TrendingUp,
@@ -20,8 +17,9 @@ import {
   ArrowUpRight,
   ArrowDownRight,
 } from "lucide-react";
-import { site } from "@/lib/site";
 import { createClient } from "@/utils/supabase/server";
+import { isAdmin } from "@/lib/auth";
+import { PortalHeader } from "@/components/portal/portal-header";
 import { AllocationChart } from "./allocation-chart";
 import { PerformanceChart } from "./performance-chart";
 
@@ -78,34 +76,15 @@ export default async function DashboardPage() {
     { label: "Holdings", value: String(holdings.length), icon: Layers, color: "text-navy-200", bg: "bg-white/5" },
   ];
 
+  const admin = isAdmin(user.email);
+
   return (
     <div className="min-h-screen bg-cream">
-      {/* Top bar */}
-      <header className="sticky top-0 z-40 border-b border-navy-100 bg-white/90 backdrop-blur">
-        <div className="container-page flex h-16 items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-sm bg-navy-900 font-serif text-base font-bold text-gold-300">
-              U
-            </span>
-            <span className="font-serif text-lg font-bold text-navy-900">
-              {site.name}
-            </span>
-          </Link>
-          <div className="flex items-center gap-4">
-            <span className="hidden text-sm text-navy-500 sm:inline">
-              {user.email}
-            </span>
-            <form action="/auth/signout" method="post">
-              <button
-                type="submit"
-                className="inline-flex items-center gap-1.5 rounded-md border border-navy-200 bg-white px-3 py-1.5 text-sm font-medium text-navy-700 transition-colors hover:bg-navy-50"
-              >
-                <LogOut className="h-4 w-4" /> Sign out
-              </button>
-            </form>
-          </div>
-        </div>
-      </header>
+      <PortalHeader
+        email={user.email ?? ""}
+        isAdmin={admin}
+        active="dashboard"
+      />
 
       <main className="container-page py-8">
         {error && (

@@ -7,6 +7,10 @@ export const site = {
   description:
     "Usman Holdings is a private investment advisory firm helping individuals and families preserve, grow, and transfer wealth with discipline and discretion.",
   email: "usmanholdings@investments.com",
+  // Where contact-form submissions are emailed.
+  notifyEmail: "ahmernadeem674@gmail.com",
+  // Logged-in users with these emails can view the inquiries admin page.
+  adminEmails: ["ahmernadeem674@gmail.com"],
   phone: "+92 335 0357200",
   // tel: link form (no spaces)
   phoneHref: "+923350357200",

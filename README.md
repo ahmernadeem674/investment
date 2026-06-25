@@ -1,8 +1,22 @@
-# Investor Portal — Milestone 1
+# Usman Holdings — Investor Portal & Marketing Site
 
-Proves the auth + per-investor data-isolation model end to end.
+A marketing website plus a secure investor portal with per-investor data
+isolation (Row-Level Security).
 
-**Stack:** Next.js (App Router, TS) · Supabase (Auth + Postgres + RLS) · Tremor · Tailwind.
+**Stack:** Next.js (App Router, TS) · Supabase (Auth + Postgres + RLS) · Tremor · Tailwind · Resend (email).
+
+---
+
+## Email notifications & admin
+
+- **Contact form** saves every submission to the `inquiries` table and (if
+  `RESEND_API_KEY` is set) emails a notification to `site.notifyEmail`
+  (`ahmernadeem674@gmail.com`). Configure keys in `.env.local` — see
+  `.env.local.example`.
+- **Admin page** at `/dashboard/inquiries` lists all submissions. It's visible
+  only to users whose email is in `site.adminEmails` (`lib/site.ts`), and it
+  reads via the service role key. To use it: create a Supabase auth user with
+  that admin email, log in, and the "Inquiries" tab appears in the portal.
 
 ---
 
