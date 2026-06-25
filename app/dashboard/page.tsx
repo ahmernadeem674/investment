@@ -13,12 +13,11 @@ import {
   TableRow,
   TableCell,
   BadgeDelta,
-  DonutChart,
-  Legend,
 } from "@tremor/react";
 import { LogOut } from "lucide-react";
 import { site } from "@/lib/site";
 import { createClient } from "@/utils/supabase/server";
+import { AllocationChart } from "./allocation-chart";
 
 export const metadata = { title: "Dashboard" };
 
@@ -141,24 +140,7 @@ export default async function DashboardPage() {
           <Card>
             <Title>Allocation</Title>
             <Text className="mt-1">By market value</Text>
-            {allocation.length === 0 ? (
-              <Text className="mt-6">No data to display.</Text>
-            ) : (
-              <>
-                <DonutChart
-                  className="mt-6 h-44"
-                  data={allocation}
-                  category="value"
-                  index="name"
-                  valueFormatter={usd}
-                  showAnimation
-                />
-                <Legend
-                  className="mt-6"
-                  categories={allocation.map((a) => a.name)}
-                />
-              </>
-            )}
+            <AllocationChart data={allocation} />
           </Card>
 
           <Card className="lg:col-span-2">
