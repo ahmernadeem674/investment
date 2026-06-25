@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Target, Compass, Handshake } from "lucide-react";
 import { site } from "@/lib/site";
+import { images, img } from "@/lib/images";
 
 export const metadata: Metadata = { title: "About" };
 
@@ -26,13 +28,22 @@ const values = [
 export default function AboutPage() {
   return (
     <>
-      <section className="bg-navy-950">
-        <div className="container-page py-20 lg:py-28">
+      <section className="relative overflow-hidden">
+        <Image
+          src={img(images.cityDusk, 2000)}
+          alt="City skyline at dusk"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-navy-950/95 to-navy-900/75" />
+        <div className="container-page relative py-24 lg:py-32">
           <p className="eyebrow">About {site.name}</p>
           <h1 className="mt-4 max-w-3xl text-4xl font-bold text-white sm:text-5xl">
             A private advisory firm built on trust and discretion
           </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-navy-200">
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-navy-100">
             For over two decades, {site.name} has helped clients navigate
             markets with clarity and conviction. We combine institutional rigour
             with the personal attention of a boutique partnership.
@@ -42,6 +53,15 @@ export default function AboutPage() {
 
       {/* Story */}
       <section className="container-page py-20">
+        <div className="mb-16 overflow-hidden rounded-2xl shadow-xl">
+          <Image
+            src={img(images.teamMeeting, 2000)}
+            alt="Our advisory team in a client meeting"
+            width={2000}
+            height={800}
+            className="h-72 w-full object-cover md:h-96"
+          />
+        </div>
         <div className="grid gap-14 lg:grid-cols-2">
           <div>
             <p className="eyebrow">Our story</p>

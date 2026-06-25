@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowRight,
   ShieldCheck,
@@ -7,8 +8,10 @@ import {
   Users,
   Lock,
   Briefcase,
+  CheckCircle2,
 } from "lucide-react";
 import { site } from "@/lib/site";
+import { images, img } from "@/lib/images";
 
 const stats = [
   { value: "$1.2B+", label: "Assets under advisory" },
@@ -38,23 +41,25 @@ const services = [
 export default function HomePage() {
   return (
     <>
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-navy-950">
-        <div
-          className="absolute inset-0 opacity-30"
-          style={{
-            backgroundImage:
-              "radial-gradient(60% 60% at 80% 0%, rgba(205,160,73,0.25) 0%, rgba(11,31,58,0) 60%), radial-gradient(50% 50% at 0% 100%, rgba(53,102,153,0.35) 0%, rgba(11,31,58,0) 60%)",
-          }}
+      {/* Hero with photographic background */}
+      <section className="relative overflow-hidden">
+        <Image
+          src={img(images.heroTowers, 2000)}
+          alt="Modern financial district"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
         />
-        <div className="container-page relative grid items-center gap-16 py-24 lg:grid-cols-2 lg:py-32">
+        <div className="absolute inset-0 bg-gradient-to-br from-navy-950/95 via-navy-950/85 to-navy-900/70" />
+        <div className="container-page relative grid items-center gap-16 py-24 lg:grid-cols-2 lg:py-36">
           <div>
             <p className="eyebrow">{site.tagline}</p>
             <h1 className="mt-5 text-4xl font-bold leading-[1.1] text-white sm:text-5xl lg:text-6xl">
               Wealth managed with{" "}
               <span className="text-gold-300">discipline</span> and discretion.
             </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-navy-200">
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-navy-100">
               {site.name} partners with individuals, families, and institutions
               to build resilient portfolios and preserve capital across market
               cycles — guided by independent research and a fiduciary mindset.
@@ -66,12 +71,12 @@ export default function HomePage() {
               </Link>
               <Link
                 href="/services"
-                className="btn-outline border-white/20 bg-transparent text-white hover:bg-white/10"
+                className="btn-outline border-white/25 bg-white/5 text-white hover:bg-white/10"
               >
                 Explore our services
               </Link>
             </div>
-            <div className="mt-10 flex items-center gap-6 text-sm text-navy-300">
+            <div className="mt-10 flex items-center gap-6 text-sm text-navy-200">
               <span className="inline-flex items-center gap-2">
                 <ShieldCheck className="h-4 w-4 text-gold-400" /> Fiduciary
                 standard
@@ -82,10 +87,10 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Hero card */}
+          {/* Floating dashboard preview card */}
           <div className="relative">
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-8 shadow-2xl backdrop-blur-sm">
-              <p className="text-sm font-medium text-navy-300">
+            <div className="rounded-2xl border border-white/15 bg-navy-950/60 p-8 shadow-2xl backdrop-blur-md">
+              <p className="text-sm font-medium text-navy-200">
                 Total portfolio value
               </p>
               <p className="mt-2 font-serif text-4xl font-bold text-white">
@@ -102,7 +107,7 @@ export default function HomePage() {
                   { name: "Cash", pct: 10, color: "bg-white/40" },
                 ].map((row) => (
                   <div key={row.name}>
-                    <div className="flex justify-between text-sm text-navy-200">
+                    <div className="flex justify-between text-sm text-navy-100">
                       <span>{row.name}</span>
                       <span className="font-medium text-white">{row.pct}%</span>
                     </div>
@@ -173,6 +178,55 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Image + text feature */}
+      <section className="bg-white py-24">
+        <div className="container-page grid items-center gap-14 lg:grid-cols-2">
+          <div className="relative">
+            <div className="overflow-hidden rounded-2xl shadow-xl">
+              <Image
+                src={img(images.advisor, 1200)}
+                alt="An advisor meeting with clients"
+                width={1200}
+                height={900}
+                className="h-full w-full object-cover"
+              />
+            </div>
+            {/* Floating stat badge */}
+            <div className="absolute -bottom-6 -right-4 hidden rounded-xl border border-navy-100 bg-white p-5 shadow-lg sm:block">
+              <p className="font-serif text-3xl font-bold text-navy-900">98%</p>
+              <p className="text-xs text-navy-500">client retention</p>
+            </div>
+          </div>
+          <div>
+            <p className="eyebrow">Why {site.name}</p>
+            <h2 className="mt-3 text-3xl font-bold sm:text-4xl">
+              A partnership built on trust
+            </h2>
+            <p className="mt-4 leading-relaxed text-navy-600">
+              We take the time to understand your full financial picture, then
+              build a plan that adapts as your life evolves. No products to push
+              — just independent advice and a team that puts you first.
+            </p>
+            <ul className="mt-7 space-y-3.5">
+              {[
+                "Independent, conflict-free recommendations",
+                "A dedicated senior advisor for every client",
+                "Transparent, straightforward fees",
+                "Secure portal with real-time portfolio visibility",
+              ].map((point) => (
+                <li key={point} className="flex items-start gap-3">
+                  <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-gold-500" />
+                  <span className="text-navy-700">{point}</span>
+                </li>
+              ))}
+            </ul>
+            <Link href="/about" className="btn-primary mt-9">
+              About our firm <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Approach band */}
       <section className="bg-navy-900">
         <div className="container-page grid gap-12 py-20 lg:grid-cols-2 lg:items-center">
@@ -207,9 +261,17 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="container-page py-24">
-        <div className="overflow-hidden rounded-2xl bg-gradient-to-br from-navy-900 to-navy-800 px-8 py-16 text-center shadow-xl sm:px-16">
+      {/* CTA with image */}
+      <section className="relative overflow-hidden">
+        <Image
+          src={img(images.handshake, 2000)}
+          alt="A professional handshake"
+          fill
+          sizes="100vw"
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-navy-950/90" />
+        <div className="container-page relative py-24 text-center">
           <h2 className="mx-auto max-w-2xl text-3xl font-bold text-white sm:text-4xl">
             Ready to put your capital to work?
           </h2>
@@ -224,7 +286,7 @@ export default function HomePage() {
             </Link>
             <a
               href={`tel:${site.phoneHref}`}
-              className="btn-outline border-white/20 bg-transparent text-white hover:bg-white/10"
+              className="btn-outline border-white/25 bg-white/5 text-white hover:bg-white/10"
             >
               {site.phone}
             </a>

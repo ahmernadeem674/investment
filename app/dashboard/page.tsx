@@ -3,9 +3,6 @@ import { redirect } from "next/navigation";
 import {
   Card,
   Grid,
-  Metric,
-  Text,
-  Title,
   Table,
   TableHead,
   TableHeaderCell,
@@ -14,10 +11,19 @@ import {
   TableCell,
   BadgeDelta,
 } from "@tremor/react";
-import { LogOut } from "lucide-react";
+import {
+  LogOut,
+  Wallet,
+  Receipt,
+  TrendingUp,
+  Layers,
+  ArrowUpRight,
+  ArrowDownRight,
+} from "lucide-react";
 import { site } from "@/lib/site";
 import { createClient } from "@/utils/supabase/server";
 import { AllocationChart } from "./allocation-chart";
+import { PerformanceChart } from "./performance-chart";
 
 export const metadata = { title: "Dashboard" };
 
@@ -65,10 +71,17 @@ export default async function DashboardPage() {
     .map((h) => ({ name: h.symbol, value: h.quantity * h.current_price }))
     .sort((a, b) => b.value - a.value);
 
+  const kpis = [
+    { label: "Total Portfolio Value", value: usd(marketValue), icon: Wallet, color: "text-gold-300", bg: "bg-gold-400/10" },
+    { label: "Total Cost Basis", value: usd(costBasis), icon: Receipt, color: "text-navy-200", bg: "bg-white/5" },
+    { label: "Total Gain / Loss", value: usd(gainLoss), icon: TrendingUp, color: "text-emerald-300", bg: "bg-emerald-400/10", delta: gainLossPct, up: gainLoss >= 0 },
+    { label: "Holdings", value: String(holdings.length), icon: Layers, color: "text-navy-200", bg: "bg-white/5" },
+  ];
+
   return (
     <div className="min-h-screen bg-cream">
       {/* Top bar */}
-      <header className="border-b border-navy-100 bg-white">
+      <header className="sticky top-0 z-40 border-b border-navy-100 bg-white/90 backdrop-blur">
         <div className="container-page flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5">
             <span className="flex h-8 w-8 items-center justify-center rounded-sm bg-navy-900 font-serif text-base font-bold text-gold-300">
@@ -94,97 +107,150 @@ export default async function DashboardPage() {
         </div>
       </header>
 
-      <main className="container-page py-10">
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-navy-900">
-            Portfolio Dashboard
-          </h1>
-          <p className="mt-1 text-sm text-navy-500">
-            A real-time view of your holdings and performance.
-          </p>
-        </div>
-
+      <main className="container-page py-8">
         {error && (
           <div className="mb-6 rounded-md bg-red-50 p-3 text-sm text-red-700">
             Error loading holdings: {error.message}
           </div>
         )}
 
-        {/* KPI cards */}
-        <Grid numItemsSm={2} numItemsLg={4} className="gap-6">
-          <Card decoration="top" decorationColor="blue">
-            <Text>Total Portfolio Value</Text>
-            <Metric className="mt-2">{usd(marketValue)}</Metric>
-          </Card>
-          <Card decoration="top" decorationColor="slate">
-            <Text>Total Cost Basis</Text>
-            <Metric className="mt-2">{usd(costBasis)}</Metric>
-          </Card>
-          <Card decoration="top" decorationColor={gainLoss >= 0 ? "emerald" : "red"}>
-            <div className="flex items-center justify-between">
-              <Text>Total Gain / Loss</Text>
-              <BadgeDelta deltaType={gainLoss >= 0 ? "increase" : "decrease"}>
-                {pct(gainLossPct)}
-              </BadgeDelta>
+        {/* Hero panel */}
+        <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-navy-950 via-navy-900 to-navy-800 p-8 shadow-xl sm:p-10">
+          <div
+            className="pointer-events-none absolute inset-0 opacity-40"
+            style={{
+              backgroundImage:
+                "radial-gradient(50% 70% at 90% 0%, rgba(205,160,73,0.30) 0%, rgba(11,31,58,0) 60%), radial-gradient(50% 70% at 0% 100%, rgba(53,102,153,0.40) 0%, rgba(11,31,58,0) 60%)",
+            }}
+          />
+          <div className="relative flex flex-wrap items-end justify-between gap-6">
+            <div>
+              <p className="text-sm font-medium uppercase tracking-wider text-navy-300">
+                Total portfolio value
+              </p>
+              <p className="mt-2 font-serif text-4xl font-bold text-white sm:text-5xl">
+                {usd(marketValue)}
+              </p>
+              <p
+                className={`mt-3 inline-flex items-center gap-1.5 text-sm font-medium ${
+                  gainLoss >= 0 ? "text-emerald-400" : "text-red-400"
+                }`}
+              >
+                {gainLoss >= 0 ? (
+                  <ArrowUpRight className="h-4 w-4" />
+                ) : (
+                  <ArrowDownRight className="h-4 w-4" />
+                )}
+                {usd(gainLoss)} ({pct(gainLossPct)}) all-time
+              </p>
             </div>
-            <Metric className="mt-2">{usd(gainLoss)}</Metric>
-          </Card>
-          <Card decoration="top" decorationColor="amber">
-            <Text>Holdings</Text>
-            <Metric className="mt-2">{holdings.length}</Metric>
-          </Card>
-        </Grid>
+            <div className="text-right">
+              <p className="text-xs uppercase tracking-wider text-navy-400">
+                Welcome back
+              </p>
+              <p className="mt-1 text-sm font-medium text-navy-100">
+                {user.email}
+              </p>
+            </div>
+          </div>
 
-        {/* Allocation + table */}
-        <div className="mt-8 grid gap-6 lg:grid-cols-3">
+          {/* KPI strip */}
+          <div className="relative mt-8 grid gap-px overflow-hidden rounded-xl bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
+            {kpis.map((k) => (
+              <div key={k.label} className="bg-navy-950/40 p-5 backdrop-blur-sm">
+                <div className="flex items-center justify-between">
+                  <span
+                    className={`inline-flex h-9 w-9 items-center justify-center rounded-lg ${k.bg} ${k.color}`}
+                  >
+                    <k.icon className="h-5 w-5" />
+                  </span>
+                  {typeof k.delta === "number" && (
+                    <span
+                      className={`text-xs font-semibold ${
+                        k.up ? "text-emerald-400" : "text-red-400"
+                      }`}
+                    >
+                      {pct(k.delta)}
+                    </span>
+                  )}
+                </div>
+                <p className="mt-3 text-xs text-navy-300">{k.label}</p>
+                <p className="mt-0.5 text-xl font-bold text-white">{k.value}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Performance + allocation */}
+        <div className="mt-6 grid gap-6 lg:grid-cols-3">
+          <Card className="lg:col-span-2">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-semibold text-navy-900">Performance</p>
+                <p className="text-xs text-navy-500">Trailing 12 months</p>
+              </div>
+              <span className="rounded-full bg-navy-50 px-2.5 py-1 text-xs font-medium text-navy-500">
+                Illustrative
+              </span>
+            </div>
+            <PerformanceChart endValue={marketValue} />
+          </Card>
+
           <Card>
-            <Title>Allocation</Title>
-            <Text className="mt-1">By market value</Text>
+            <p className="text-sm font-semibold text-navy-900">Allocation</p>
+            <p className="text-xs text-navy-500">By market value</p>
             <AllocationChart data={allocation} />
           </Card>
+        </div>
 
-          <Card className="lg:col-span-2">
-            <Title>Holdings</Title>
-            {holdings.length === 0 ? (
-              <Text className="mt-4">No holdings found for your account yet.</Text>
-            ) : (
-              <Table className="mt-4">
-                <TableHead>
-                  <TableRow>
-                    <TableHeaderCell>Symbol</TableHeaderCell>
-                    <TableHeaderCell>Account</TableHeaderCell>
-                    <TableHeaderCell className="text-right">Qty</TableHeaderCell>
-                    <TableHeaderCell className="text-right">Cost</TableHeaderCell>
-                    <TableHeaderCell className="text-right">Price</TableHeaderCell>
-                    <TableHeaderCell className="text-right">
-                      Market Value
-                    </TableHeaderCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {holdings.map((h) => (
+        {/* Holdings table */}
+        <Card className="mt-6">
+          <p className="text-sm font-semibold text-navy-900">Holdings</p>
+          {holdings.length === 0 ? (
+            <p className="mt-4 text-sm text-navy-500">
+              No holdings found for your account yet.
+            </p>
+          ) : (
+            <Table className="mt-4">
+              <TableHead>
+                <TableRow>
+                  <TableHeaderCell>Symbol</TableHeaderCell>
+                  <TableHeaderCell>Account</TableHeaderCell>
+                  <TableHeaderCell className="text-right">Qty</TableHeaderCell>
+                  <TableHeaderCell className="text-right">Cost</TableHeaderCell>
+                  <TableHeaderCell className="text-right">Price</TableHeaderCell>
+                  <TableHeaderCell className="text-right">Market Value</TableHeaderCell>
+                  <TableHeaderCell className="text-right">Gain / Loss</TableHeaderCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {holdings.map((h) => {
+                  const mv = h.quantity * h.current_price;
+                  const cv = h.quantity * h.cost_basis;
+                  const gl = mv - cv;
+                  const glp = cv > 0 ? gl / cv : 0;
+                  return (
                     <TableRow key={h.id}>
-                      <TableCell className="font-medium text-navy-900">
+                      <TableCell className="font-semibold text-navy-900">
                         {h.symbol}
                       </TableCell>
                       <TableCell>{h.accounts?.name ?? "—"}</TableCell>
                       <TableCell className="text-right">{h.quantity}</TableCell>
+                      <TableCell className="text-right">{usd(h.cost_basis)}</TableCell>
+                      <TableCell className="text-right">{usd(h.current_price)}</TableCell>
+                      <TableCell className="text-right font-medium">{usd(mv)}</TableCell>
                       <TableCell className="text-right">
-                        {usd(h.cost_basis)}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        {usd(h.current_price)}
-                      </TableCell>
-                      <TableCell className="text-right font-medium">
-                        {usd(h.quantity * h.current_price)}
+                        <BadgeDelta deltaType={gl >= 0 ? "increase" : "decrease"} size="xs">
+                          {pct(glp)}
+                        </BadgeDelta>
                       </TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            )}
-          </Card>
-        </div>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          )}
+        </Card>
       </main>
     </div>
   );

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowRight,
   LineChart,
@@ -10,6 +11,7 @@ import {
   Globe2,
 } from "lucide-react";
 import { site } from "@/lib/site";
+import { images, img } from "@/lib/images";
 
 export const metadata: Metadata = { title: "Services" };
 
@@ -55,13 +57,22 @@ const services = [
 export default function ServicesPage() {
   return (
     <>
-      <section className="bg-navy-950">
-        <div className="container-page py-20 lg:py-28">
+      <section className="relative overflow-hidden">
+        <Image
+          src={img(images.analyticsDesk, 2000)}
+          alt="Financial analysis and planning"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-navy-950/95 to-navy-900/75" />
+        <div className="container-page relative py-24 lg:py-32">
           <p className="eyebrow">Our services</p>
           <h1 className="mt-4 max-w-3xl text-4xl font-bold text-white sm:text-5xl">
             Solutions for every stage of your financial life
           </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-navy-200">
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-navy-100">
             From building a portfolio to preserving a legacy, our integrated
             advisory services are designed to work together — coordinated by a
             team that knows you.
