@@ -10,15 +10,26 @@ Proves the auth + per-investor data-isolation model end to end.
 
 ```
 app/
+  (marketing)/      PUBLIC site (shared header + footer)
+    page.tsx        home / landing
+    about/          about the firm
+    services/       services overview
+    contact/        "submit a query" form -> saves to inquiries table
   login/            email/password login (Server Action)
-  dashboard/        PROTECTED page: Tremor KPI cards + holdings table
+  dashboard/        PROTECTED: KPI cards + allocation chart + holdings table
   auth/signout/     sign-out route
-middleware.ts       refreshes session + redirects logged-out users to /login
+components/marketing/  site header + footer
+lib/site.ts         firm name + contact details (single source of truth)
+middleware.ts       refreshes session + protects /dashboard only
 utils/supabase/     browser / server / middleware Supabase clients
 supabase/
-  migrations/0001_init.sql   schema + signup trigger + RLS policies
-  seed.sql                   sample accounts + holdings (run after signup)
+  migrations/0001_init.sql        schema + signup trigger + RLS policies
+  migrations/0002_inquiries.sql   contact-form submissions table (+ RLS)
+  seed.sql                        sample accounts + holdings (run after signup)
 ```
+
+To change the firm name, email (`usmanholdings@investments.com`), or phone
+(`+92 335 0357200`), edit **`lib/site.ts`** — it updates everywhere.
 
 ---
 
@@ -44,6 +55,8 @@ Then edit `.env.local` and paste, from **Supabase dashboard → Project Settings
 
 **Option A — Supabase dashboard (simplest):**
 Open **SQL Editor**, paste the contents of `supabase/migrations/0001_init.sql`, Run.
+Then do the same with `supabase/migrations/0002_inquiries.sql` (powers the
+contact form). Read submissions later under **Table Editor → inquiries**.
 
 **Option B — Supabase CLI:**
 ```bash

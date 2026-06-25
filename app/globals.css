@@ -2,11 +2,44 @@
 @tailwind components;
 @tailwind utilities;
 
-html,
-body {
-  height: 100%;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    text-rendering: optimizeLegibility;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-serif tracking-tight text-navy-900;
+  }
 }
 
-body {
-  background-color: #f9fafb;
+@layer components {
+  /* Page container */
+  .container-page {
+    @apply mx-auto w-full max-w-7xl px-6 lg:px-8;
+  }
+
+  /* Small uppercase eyebrow label */
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.2em] text-gold-600;
+  }
+
+  /* Primary button */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-md bg-navy-900 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-navy-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus-visible:ring-offset-2;
+  }
+
+  /* Gold button */
+  .btn-gold {
+    @apply inline-flex items-center justify-center gap-2 rounded-md bg-gold-400 px-6 py-3 text-sm font-semibold text-navy-950 shadow-sm transition-colors hover:bg-gold-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-navy-900 focus-visible:ring-offset-2;
+  }
+
+  /* Outline button */
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-md border border-navy-200 bg-white px-6 py-3 text-sm font-semibold text-navy-900 transition-colors hover:border-navy-300 hover:bg-navy-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus-visible:ring-offset-2;
+  }
 }
