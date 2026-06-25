@@ -3,7 +3,7 @@ import { ArrowLeft, ShieldCheck, Lock } from "lucide-react";
 import { site } from "@/lib/site";
 import { signIn } from "./actions";
 
-export const metadata = { title: "Client Login" };
+export const metadata = { title: "Investor Login" };
 
 export default function LoginPage({
   searchParams,
@@ -68,7 +68,7 @@ export default function LoginPage({
             <ArrowLeft className="h-4 w-4" /> Back to site
           </Link>
 
-          <h1 className="text-2xl font-bold text-navy-900">Client Login</h1>
+          <h1 className="text-2xl font-bold text-navy-900">Investor Login</h1>
           <p className="mt-1.5 text-sm text-navy-500">
             Sign in to access your investor portal.
           </p>

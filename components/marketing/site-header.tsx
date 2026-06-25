@@ -48,7 +48,7 @@ export function SiteHeader({ isAuthed }: { isAuthed: boolean }) {
             href={isAuthed ? "/dashboard" : "/login"}
             className="btn-primary py-2.5"
           >
-            {isAuthed ? "Dashboard" : "Client Login"}
+            {isAuthed ? "Dashboard" : "Investor Login"}
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
@@ -83,7 +83,7 @@ export function SiteHeader({ isAuthed }: { isAuthed: boolean }) {
               onClick={() => setOpen(false)}
               className="btn-primary mt-2"
             >
-              {isAuthed ? "Dashboard" : "Client Login"}
+              {isAuthed ? "Dashboard" : "Investor Login"}
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>

@@ -43,7 +43,7 @@ export function SiteFooter() {
                   href="/login"
                   className="text-navy-300 transition-colors hover:text-gold-300"
                 >
-                  Client Login
+                  Investor Login
                 </Link>
               </li>
             </ul>
