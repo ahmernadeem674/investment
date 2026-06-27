@@ -3,162 +3,163 @@ import Link from "next/link";
 import Image from "next/image";
 import {
   ArrowRight,
-  LineChart,
+  Bitcoin,
+  CandlestickChart,
   Landmark,
-  Briefcase,
-  PiggyBank,
+  Gem,
+  ArrowLeftRight,
+  PieChart,
+  Building2,
+  Sprout,
+  Ship,
+  Rocket,
+  UserCog,
+  ClipboardCheck,
   Scale,
-  Globe2,
 } from "lucide-react";
-import { site } from "@/lib/site";
+import { site, whatsappLink } from "@/lib/site";
 import { images, img } from "@/lib/images";
 
 export const metadata: Metadata = { title: "Services" };
 
-const services = [
+const groups = [
   {
-    icon: LineChart,
-    title: "Portfolio Management",
-    desc: "Actively managed, diversified portfolios designed around your risk tolerance, time horizon, and liquidity needs.",
-    points: ["Strategic asset allocation", "Risk-managed rebalancing", "Tax-aware investing"],
+    group: "Global Markets",
+    range: "01 — 05",
+    items: [
+      { icon: Bitcoin, title: "Digital Assets & Crypto", points: ["Bitcoin & Ethereum institutional strategies", "Research-driven entry & exit points", "Disciplined allocation models", "MEXC Official Partnership"] },
+      { icon: CandlestickChart, title: "Equities & Indices", points: ["Global & Pakistan equities", "Index-based strategies", "Long & short term positioning"] },
+      { icon: Landmark, title: "Fixed Income", points: ["Government & corporate bonds", "Capital preservation strategies", "Yield optimization"] },
+      { icon: Gem, title: "Commodities & Metals", points: ["Gold, silver & precious metals", "Energy & agricultural commodities", "Inflation hedge strategies"] },
+      { icon: ArrowLeftRight, title: "Foreign Exchange (FX)", points: ["Major & emerging market pairs", "PKR/USD exposure management", "Currency risk advisory"] },
+    ],
   },
   {
-    icon: Landmark,
-    title: "Wealth Planning",
-    desc: "A coordinated financial plan spanning retirement, cash flow, education, and intergenerational transfer.",
-    points: ["Retirement planning", "Cash-flow modelling", "Estate & succession"],
+    group: "Wealth & Assets",
+    range: "06 — 07",
+    items: [
+      { icon: PieChart, title: "Wealth & Portfolio Management", points: ["Strategic asset allocation", "Risk-managed rebalancing", "Intergenerational wealth transfer", "Family office support", "Estate & succession planning"] },
+      { icon: Building2, title: "Property & Real Estate", points: ["Residential & commercial property", "Property development", "Pakistan & international markets", "Real estate investment strategy"] },
+    ],
   },
   {
-    icon: Briefcase,
-    title: "Private Advisory",
-    desc: "Bespoke solutions and a dedicated advisor for high-net-worth individuals and family offices.",
-    points: ["Dedicated advisor", "Bespoke mandates", "Family-office support"],
+    group: "Ventures",
+    range: "08 — 10",
+    items: [
+      { icon: Sprout, title: "Agriculture", points: ["Agricultural investment opportunities", "Pakistan & regional markets", "Tangible asset growth"] },
+      { icon: Ship, title: "Export Trade", points: ["Trade finance advisory", "International market entry", "Export business investment"] },
+      { icon: Rocket, title: "Business Investment", points: ["Direct business stakes", "Growth capital deployment", "Venture partnerships"] },
+    ],
   },
   {
-    icon: PiggyBank,
-    title: "Retirement Solutions",
-    desc: "Strategies to accumulate, protect, and draw down retirement assets with confidence.",
-    points: ["Accumulation strategy", "Income planning", "Pension consolidation"],
-  },
-  {
-    icon: Scale,
-    title: "Tax & Estate",
-    desc: "Structuring to manage tax efficiently and transfer wealth smoothly to the next generation.",
-    points: ["Tax efficiency", "Trust structures", "Legacy planning"],
-  },
-  {
-    icon: Globe2,
-    title: "Global Markets Access",
-    desc: "Diversified exposure across global equities, fixed income, and alternative investments.",
-    points: ["Global equities", "Fixed income", "Alternatives"],
+    group: "Advisory",
+    range: "11 — 13",
+    items: [
+      { icon: UserCog, title: "Private Advisory", points: ["Dedicated one-on-one advisor", "Bespoke investment mandates", "HNW & family office clients", "Strictly confidential"] },
+      { icon: ClipboardCheck, title: "Investment Consultancy", points: ["Portfolio review & analysis", "Market entry strategy", "Risk assessment"] },
+      { icon: Scale, title: "Tax & Estate Planning", points: ["Tax efficiency structuring", "Trust & legacy planning", "Wealth succession"] },
+    ],
   },
 ];
 
 export default function ServicesPage() {
+  let counter = 0;
   return (
     <>
-      <section className="relative overflow-hidden">
-        <Image
-          src={img(images.analyticsDesk, 2000)}
-          alt="Financial analysis and planning"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-navy-950/95 to-navy-900/75" />
+      <section className="relative overflow-hidden border-b border-line">
+        <Image src={img(images.analyticsDesk, 2000)} alt="" fill priority sizes="100vw" className="object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/95 to-ink/70" />
         <div className="container-page relative py-24 lg:py-32">
           <p className="eyebrow">Our services</p>
-          <h1 className="mt-4 max-w-3xl text-4xl font-bold text-white sm:text-5xl">
-            Solutions for every stage of your financial life
+          <h1 className="mt-5 max-w-3xl font-serif text-4xl font-black text-white sm:text-5xl lg:text-6xl">
+            Thirteen disciplines. <span className="text-gold-400">One standard.</span>
           </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-navy-100">
-            From building a portfolio to preserving a legacy, our integrated
-            advisory services are designed to work together — coordinated by a
-            team that knows you.
+          <p className="mt-6 max-w-2xl text-base leading-relaxed text-gray-400">
+            From digital assets to real-world ventures, every mandate is run with
+            the same research-driven discipline — coordinated by a team that knows
+            you.
           </p>
         </div>
       </section>
 
-      <section className="container-page py-20">
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {services.map((s) => (
-            <div
-              key={s.title}
-              className="flex flex-col rounded-xl border border-navy-100 bg-white p-8 shadow-sm transition-shadow hover:shadow-md"
-            >
-              <span className="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-navy-900 text-gold-300">
-                <s.icon className="h-6 w-6" />
-              </span>
-              <h2 className="mt-6 text-xl font-bold">{s.title}</h2>
-              <p className="mt-3 text-sm leading-relaxed text-navy-600">
-                {s.desc}
-              </p>
-              <ul className="mt-5 space-y-2.5">
-                {s.points.map((p) => (
-                  <li
-                    key={p}
-                    className="flex items-center gap-2.5 text-sm text-navy-700"
-                  >
-                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-gold-400" />
-                    {p}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Process */}
-      <section className="bg-white py-20">
-        <div className="container-page">
-          <div className="mx-auto max-w-2xl text-center">
-            <p className="eyebrow">How we work</p>
-            <h2 className="mt-3 text-3xl font-bold sm:text-4xl">
-              A clear, four-step process
+      {groups.map((g) => (
+        <section key={g.group} className="container-page py-16">
+          <div className="mb-10 flex items-end justify-between border-b border-line pb-5">
+            <h2 className="section-title">
+              {g.group.split(" ")[0]}{" "}
+              <span>{g.group.split(" ").slice(1).join(" ")}</span>
             </h2>
+            <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-gray-600">
+              {g.range}
+            </span>
           </div>
-          <div className="mt-14 grid gap-8 md:grid-cols-4">
-            {[
-              { n: "01", t: "Discover", d: "We learn your goals, circumstances, and attitude to risk." },
-              { n: "02", t: "Design", d: "We build a tailored plan and investment strategy." },
-              { n: "03", t: "Implement", d: "We put your plan to work with precision and care." },
-              { n: "04", t: "Review", d: "We monitor, report, and adjust as life evolves." },
-            ].map((step) => (
-              <div key={step.n} className="relative">
-                <span className="font-serif text-5xl font-bold text-gold-200">
-                  {step.n}
-                </span>
-                <h3 className="mt-3 text-lg font-bold">{step.t}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-navy-600">
-                  {step.d}
-                </p>
-              </div>
-            ))}
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {g.items.map((s) => {
+              counter += 1;
+              const n = String(counter).padStart(2, "0");
+              return (
+                <div
+                  key={s.title}
+                  className="relative flex flex-col border border-line bg-card p-7 transition-colors hover:border-gold-700"
+                >
+                  <span className="absolute right-6 top-6 font-mono text-xs text-gray-700">
+                    {n}
+                  </span>
+                  <span className="inline-flex h-11 w-11 items-center justify-center rounded-sm bg-gold-400/10 text-gold-400">
+                    <s.icon className="h-5 w-5" />
+                  </span>
+                  <h3 className="mt-5 font-serif text-lg font-bold text-white">
+                    {s.title}
+                  </h3>
+                  <ul className="mt-4 space-y-2.5">
+                    {s.points.map((p) => (
+                      <li key={p} className="flex items-start gap-2.5 text-sm text-gray-400">
+                        <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-gold-400" />
+                        {p}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
           </div>
+        </section>
+      ))}
+
+      {/* BPO cross-link */}
+      <section className="container-page pb-8 pt-4">
+        <div className="flex flex-col items-start justify-between gap-6 border border-gold-700/40 bg-surface p-10 sm:flex-row sm:items-center">
+          <div>
+            <p className="eyebrow">Looking for outsourcing solutions?</p>
+            <h2 className="mt-3 font-serif text-2xl font-bold text-white">
+              Explore our BPO services
+            </h2>
+            <p className="mt-2 max-w-xl text-sm text-gray-400">
+              Financial, Tech &amp; Customer Service outsourcing for businesses
+              worldwide.
+            </p>
+          </div>
+          <Link href="/bpo" className="btn-line shrink-0">
+            View BPO services <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="container-page py-20">
-        <div className="overflow-hidden rounded-2xl bg-gradient-to-br from-navy-900 to-navy-800 px-8 py-16 text-center shadow-xl sm:px-16">
-          <h2 className="mx-auto max-w-2xl text-3xl font-bold text-white sm:text-4xl">
-            Find the right solution for you
+      <section className="container-page py-16">
+        <div className="border border-line bg-card px-8 py-14 text-center">
+          <h2 className="mx-auto max-w-2xl font-serif text-3xl font-black text-white">
+            Find the right mandate for you
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-navy-200">
-            Tell us about your goals and we&apos;ll recommend a tailored
-            approach.
+          <p className="mx-auto mt-4 max-w-xl text-gray-400">
+            Tell us about your goals and we&apos;ll recommend a tailored approach.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link href="/contact" className="btn-gold">
               Submit an enquiry <ArrowRight className="h-4 w-4" />
             </Link>
-            <a
-              href={`mailto:${site.email}`}
-              className="btn-outline border-white/20 bg-transparent text-white hover:bg-white/10"
-            >
-              Email us
+            <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="btn-line">
+              WhatsApp us
             </a>
           </div>
         </div>

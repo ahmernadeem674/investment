@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Inter, Playfair_Display, Space_Mono } from "next/font/google";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -11,7 +11,15 @@ const inter = Inter({
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
+  weight: ["400", "700", "900"],
   variable: "--font-serif",
+  display: "swap",
+});
+
+const spaceMono = Space_Mono({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-mono",
   display: "swap",
 });
 
@@ -43,8 +51,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
-      <body className="bg-cream font-sans text-navy-900 antialiased">
+    <html
+      lang="en"
+      className={`${inter.variable} ${playfair.variable} ${spaceMono.variable}`}
+    >
+      <body className="bg-ink font-sans text-gray-200 antialiased">
         {children}
       </body>
     </html>

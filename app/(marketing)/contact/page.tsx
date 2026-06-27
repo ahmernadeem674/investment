@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { Mail, Phone, MapPin, Clock } from "lucide-react";
-import { site } from "@/lib/site";
+import { Mail, Phone, MapPin, Clock, MessageCircle } from "lucide-react";
+import { site, whatsappLink } from "@/lib/site";
 import { ContactForm } from "./contact-form";
 
 export const metadata: Metadata = {
@@ -11,57 +11,52 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <>
-      <section className="bg-navy-950">
-        <div className="container-page py-20 lg:py-24">
-          <p className="eyebrow">Contact</p>
-          <h1 className="mt-4 max-w-3xl text-4xl font-bold text-white sm:text-5xl">
-            Let&apos;s talk about your goals
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-navy-200">
-            Submit a query using the form below, or reach us directly. A member
-            of our team will respond promptly and in confidence.
-          </p>
-        </div>
+      <section className="container-page py-20 lg:py-24">
+        <p className="eyebrow">Contact</p>
+        <h1 className="mt-5 max-w-3xl font-serif text-4xl font-black text-white sm:text-5xl lg:text-6xl">
+          Let&apos;s talk about <span className="text-gold-400">your goals.</span>
+        </h1>
+        <p className="mt-6 max-w-2xl text-base leading-relaxed text-gray-400">
+          Message us on WhatsApp, submit a query, or reach us directly. A member
+          of our team will respond promptly and in confidence.
+        </p>
       </section>
 
-      <section className="container-page py-20">
+      <section className="container-page pb-24">
         <div className="grid gap-12 lg:grid-cols-5">
-          {/* Contact details */}
+          {/* Details */}
           <div className="lg:col-span-2">
-            <h2 className="text-2xl font-bold">Get in touch</h2>
-            <p className="mt-3 text-navy-600">
-              Prefer to reach out directly? Use the details below.
-            </p>
+            <a
+              href={whatsappLink()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-4 border border-emerald-500/30 bg-emerald-500/5 p-5 transition-colors hover:border-emerald-500/60"
+            >
+              <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-sm bg-emerald-500/15 text-emerald-400">
+                <MessageCircle className="h-5 w-5" />
+              </span>
+              <div>
+                <p className="font-mono text-[10px] uppercase tracking-[0.08em] text-emerald-400">
+                  Fastest response
+                </p>
+                <p className="mt-0.5 font-semibold text-white">Chat on WhatsApp</p>
+              </div>
+            </a>
 
             <ul className="mt-8 space-y-6">
-              <ContactItem
-                icon={Mail}
-                label="Email"
-                value={site.email}
-                href={`mailto:${site.email}`}
-              />
-              <ContactItem
-                icon={Phone}
-                label="Phone"
-                value={site.phone}
-                href={`tel:${site.phoneHref}`}
-              />
+              <ContactItem icon={Mail} label="Email" value={site.email} href={`mailto:${site.email}`} />
+              <ContactItem icon={Phone} label="Phone" value={site.phone} href={`tel:${site.phoneHref}`} />
               <ContactItem icon={MapPin} label="Office" value={site.address} />
-              <ContactItem
-                icon={Clock}
-                label="Hours"
-                value="Mon–Fri, 9:00 – 18:00 (PKT)"
-              />
+              <ContactItem icon={Clock} label="Hours" value="Mon–Fri, 9:00 – 18:00 (PKT)" />
             </ul>
           </div>
 
           {/* Form */}
           <div className="lg:col-span-3">
-            <div className="rounded-2xl border border-navy-100 bg-white p-8 shadow-sm sm:p-10">
-              <h2 className="text-2xl font-bold">Submit a query</h2>
-              <p className="mt-2 text-sm text-navy-500">
-                Fields marked <span className="text-gold-600">*</span> are
-                required.
+            <div className="border border-line bg-card p-8 sm:p-10">
+              <h2 className="font-serif text-2xl font-bold text-white">Submit a query</h2>
+              <p className="mt-2 text-sm text-gray-500">
+                Fields marked <span className="text-gold-400">*</span> are required.
               </p>
               <div className="mt-6">
                 <ContactForm />
@@ -87,14 +82,12 @@ function ContactItem({
 }) {
   const content = (
     <div className="flex items-start gap-4">
-      <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-navy-900 text-gold-300">
+      <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-sm bg-gold-400/10 text-gold-400">
         <Icon className="h-5 w-5" />
       </span>
       <div>
-        <p className="text-xs font-semibold uppercase tracking-wider text-navy-400">
-          {label}
-        </p>
-        <p className="mt-0.5 break-all font-medium text-navy-900">{value}</p>
+        <p className="font-mono text-[10px] uppercase tracking-[0.08em] text-gray-500">{label}</p>
+        <p className="mt-0.5 break-all font-medium text-white">{value}</p>
       </div>
     </div>
   );

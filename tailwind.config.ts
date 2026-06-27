@@ -14,8 +14,14 @@ const config: Config = {
       fontFamily: {
         sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "sans-serif"],
         serif: ["var(--font-serif)", "ui-serif", "Georgia", "serif"],
+        mono: ["var(--font-mono)", "ui-monospace", "SFMono-Regular", "monospace"],
       },
       colors: {
+        // Dark brand surfaces (matches usmanholdings.partners)
+        ink: "#0a0a0a",
+        surface: "#111111",
+        card: "#181818",
+        line: "#2a2a2a",
         // Brand palette
         navy: {
           50: "#f0f5fa",

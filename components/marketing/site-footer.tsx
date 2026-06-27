@@ -1,30 +1,46 @@
 import Link from "next/link";
-import { Mail, Phone, MapPin } from "lucide-react";
-import { site } from "@/lib/site";
+import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
+import { site, whatsappLink } from "@/lib/site";
 
 export function SiteFooter() {
   return (
-    <footer className="mt-24 border-t border-navy-800 bg-navy-950 text-navy-100">
+    <footer className="border-t border-line bg-surface">
       <div className="container-page py-16">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
-          {/* Brand */}
           <div className="lg:col-span-2">
-            <div className="flex items-center gap-3">
-              <span className="flex h-9 w-9 items-center justify-center rounded-sm bg-white/5 font-serif text-lg font-bold text-gold-300">
+            <div className="flex items-center gap-2.5">
+              <span className="flex h-8 w-8 items-center justify-center rounded-sm bg-gold-400 font-serif text-base font-bold text-ink">
                 U
               </span>
-              <span className="font-serif text-xl font-bold text-white">
+              <span className="font-serif text-lg font-bold text-gold-400">
                 {site.name}
               </span>
             </div>
-            <p className="mt-4 max-w-md text-sm leading-relaxed text-navy-300">
+            <p className="mt-4 max-w-md text-sm leading-relaxed text-gray-500">
               {site.description}
             </p>
+            <div className="mt-6 flex gap-3">
+              <a
+                href={site.socials.x}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono text-[11px] uppercase tracking-[0.08em] text-gray-500 transition-colors hover:text-gold-400"
+              >
+                X / Twitter ↗
+              </a>
+              <a
+                href={site.socials.vimeo}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono text-[11px] uppercase tracking-[0.08em] text-gray-500 transition-colors hover:text-gold-400"
+              >
+                Vimeo ↗
+              </a>
+            </div>
           </div>
 
-          {/* Navigate */}
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-white">
+            <h4 className="font-mono text-[11px] font-bold uppercase tracking-[0.1em] text-gray-300">
               Navigate
             </h4>
             <ul className="mt-4 space-y-3 text-sm">
@@ -32,7 +48,7 @@ export function SiteFooter() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="text-navy-300 transition-colors hover:text-gold-300"
+                    className="text-gray-500 transition-colors hover:text-gold-400"
                   >
                     {item.label}
                   </Link>
@@ -41,7 +57,7 @@ export function SiteFooter() {
               <li>
                 <Link
                   href="/login"
-                  className="text-navy-300 transition-colors hover:text-gold-300"
+                  className="text-gray-500 transition-colors hover:text-gold-400"
                 >
                   Investor Login
                 </Link>
@@ -49,45 +65,56 @@ export function SiteFooter() {
             </ul>
           </div>
 
-          {/* Contact */}
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-white">
+            <h4 className="font-mono text-[11px] font-bold uppercase tracking-[0.1em] text-gray-300">
               Contact
             </h4>
             <ul className="mt-4 space-y-3 text-sm">
               <li>
                 <a
                   href={`mailto:${site.email}`}
-                  className="flex items-start gap-3 text-navy-300 transition-colors hover:text-gold-300"
+                  className="flex items-start gap-3 text-gray-500 transition-colors hover:text-gold-400"
                 >
-                  <Mail className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
+                  <Mail className="mt-0.5 h-4 w-4 shrink-0 text-gold-500" />
                   <span className="break-all">{site.email}</span>
                 </a>
               </li>
               <li>
                 <a
-                  href={`tel:${site.phoneHref}`}
-                  className="flex items-start gap-3 text-navy-300 transition-colors hover:text-gold-300"
+                  href={whatsappLink()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-start gap-3 text-gray-500 transition-colors hover:text-gold-400"
                 >
-                  <Phone className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
+                  <MessageCircle className="mt-0.5 h-4 w-4 shrink-0 text-gold-500" />
+                  <span>WhatsApp</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`tel:${site.phoneHref}`}
+                  className="flex items-start gap-3 text-gray-500 transition-colors hover:text-gold-400"
+                >
+                  <Phone className="mt-0.5 h-4 w-4 shrink-0 text-gold-500" />
                   <span>{site.phone}</span>
                 </a>
               </li>
-              <li className="flex items-start gap-3 text-navy-300">
-                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
+              <li className="flex items-start gap-3 text-gray-500">
+                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold-500" />
                 <span>{site.address}</span>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-navy-800 pt-8 text-xs text-navy-400 sm:flex-row">
+        <div className="mt-14 flex flex-col gap-4 border-t border-line pt-8 text-xs text-gray-600 sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {new Date().getFullYear()} {site.name}. All rights reserved.
           </p>
-          <p className="max-w-xl text-center sm:text-right">
-            Investments carry risk, including the possible loss of principal.
-            Past performance is not indicative of future results.
+          <p className="max-w-2xl sm:text-right">
+            Past performance is not indicative of future results. Usman Holdings
+            provides consultancy and advisory services only. This is not
+            financial advice.
           </p>
         </div>
       </div>
