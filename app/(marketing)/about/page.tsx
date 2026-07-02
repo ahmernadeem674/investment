@@ -40,8 +40,8 @@ export default function AboutPage() {
           <div className="lg:col-span-2">
             <div className="overflow-hidden border border-line">
               <Image
-                src={img(images.advisor, 1100)}
-                alt="Usman Holdings advisory"
+                src={images.founder}
+                alt={`${site.founder}, Founder of ${site.name}`}
                 width={1100}
                 height={1300}
                 className="h-full w-full object-cover"
