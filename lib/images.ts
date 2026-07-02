@@ -12,8 +12,8 @@ export const images = {
   teamMeeting: U + "photo-1600880292203-757bb62b4baf", // business meeting
   laptopAnalytics: U + "photo-1460925895917-afdab827c52f", // laptop analytics
   advisor: U + "photo-1556761175-5973dc0f32e7", // advisor / office team
-  // Local founder photo (place the file in /public). Uploaded as "About page.png".
-  founder: "/About page.png",
+  // Local founder photo (in /public).
+  founder: "/about-founder.png",
 };
 
 // Build a sized, optimised Unsplash URL. (next/image re-optimises too, but
