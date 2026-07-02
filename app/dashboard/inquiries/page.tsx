@@ -43,7 +43,7 @@ export default async function InquiriesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-cream">
+    <div className="dark min-h-screen bg-ink text-gray-200">
       <PortalHeader
         email={user.email ?? ""}
         isAdmin
@@ -53,12 +53,12 @@ export default async function InquiriesPage() {
       <main className="container-page py-8">
         <div className="mb-6 flex items-end justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-navy-900">Inquiries</h1>
-            <p className="mt-1 text-sm text-navy-500">
+            <h1 className="text-2xl font-bold text-white">Inquiries</h1>
+            <p className="mt-1 text-sm text-gray-400">
               Contact-form submissions from the website.
             </p>
           </div>
-          <span className="rounded-full bg-navy-900 px-3 py-1 text-sm font-semibold text-white">
+          <span className="rounded-full border border-gold-500/50 bg-gold-400/10 px-3 py-1 text-sm font-semibold text-gold-300">
             {inquiries.length} total
           </span>
         </div>
@@ -86,45 +86,45 @@ export default async function InquiriesPage() {
         )}
 
         {hasServiceKey && !loadError && inquiries.length === 0 && (
-          <Card>
-            <p className="text-sm text-navy-500">No inquiries yet.</p>
+          <Card className="border-gold-700/30">
+            <p className="text-sm text-gray-400">No inquiries yet.</p>
           </Card>
         )}
 
         <div className="space-y-4">
           {inquiries.map((q) => (
-            <Card key={q.id}>
+            <Card key={q.id} className="border-gold-700/30">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
-                  <p className="font-semibold text-navy-900">{q.name}</p>
-                  <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-navy-500">
+                  <p className="font-semibold text-white">{q.name}</p>
+                  <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-400">
                     <a
                       href={`mailto:${q.email}`}
-                      className="inline-flex items-center gap-1.5 hover:text-navy-900"
+                      className="inline-flex items-center gap-1.5 hover:text-gold-300"
                     >
                       <Mail className="h-3.5 w-3.5" /> {q.email}
                     </a>
                     {q.phone && (
                       <a
                         href={`tel:${q.phone}`}
-                        className="inline-flex items-center gap-1.5 hover:text-navy-900"
+                        className="inline-flex items-center gap-1.5 hover:text-gold-300"
                       >
                         <Phone className="h-3.5 w-3.5" /> {q.phone}
                       </a>
                     )}
                   </div>
                 </div>
-                <time className="text-xs text-navy-400">
+                <time className="text-xs text-gray-500">
                   {new Date(q.created_at).toLocaleString()}
                 </time>
               </div>
 
               {q.subject && (
-                <p className="mt-4 text-sm font-medium text-navy-800">
+                <p className="mt-4 text-sm font-medium text-gray-200">
                   {q.subject}
                 </p>
               )}
-              <p className="mt-1.5 whitespace-pre-wrap text-sm leading-relaxed text-navy-600">
+              <p className="mt-1.5 whitespace-pre-wrap text-sm leading-relaxed text-gray-300">
                 {q.message}
               </p>
             </Card>

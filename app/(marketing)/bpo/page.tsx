@@ -6,6 +6,9 @@ import {
   Calculator,
   Code2,
   Headphones,
+  Workflow,
+  Users,
+  HeartPulse,
   Globe,
   Clock,
   ShieldCheck,
@@ -13,33 +16,15 @@ import {
 } from "lucide-react";
 import { whatsappLink } from "@/lib/site";
 import { images, img } from "@/lib/images";
+import { bpoCategories } from "@/lib/bpo";
 
 export const metadata: Metadata = {
   title: "BPO Services",
   description:
-    "Financial, Tech, and Customer Service outsourcing for businesses worldwide.",
+    "Financial, Tech, Customer Experience, Business Operations, HR, and Healthcare outsourcing for businesses worldwide.",
 };
 
-const pillars = [
-  {
-    icon: Calculator,
-    title: "Financial Outsourcing",
-    desc: "End-to-end finance and accounting support, run by experienced professionals.",
-    points: ["Bookkeeping & accounting", "Accounts payable / receivable", "Payroll processing", "Financial reporting & analysis", "Tax preparation support"],
-  },
-  {
-    icon: Code2,
-    title: "Tech Outsourcing",
-    desc: "Dedicated engineering and IT talent to build and maintain your products.",
-    points: ["Software & web development", "Mobile app development", "QA & testing", "IT support & maintenance", "Data, cloud & DevOps"],
-  },
-  {
-    icon: Headphones,
-    title: "Customer Service",
-    desc: "Multichannel support teams that protect and grow your customer relationships.",
-    points: ["Inbound & outbound call center", "Live chat & email support", "Virtual assistants", "Help-desk & ticketing", "Back-office support"],
-  },
-];
+const icons = [Calculator, Code2, Headphones, Workflow, Users, HeartPulse];
 
 const why = [
   { icon: TrendingDown, t: "Lower costs", d: "Reduce operating costs without compromising on quality." },
@@ -51,6 +36,7 @@ const why = [
 export default function BpoPage() {
   return (
     <>
+      {/* Hero */}
       <section className="relative overflow-hidden border-b border-line">
         <Image src={img(images.laptopAnalytics, 2000)} alt="" fill priority sizes="100vw" className="object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/95 to-ink/70" />
@@ -59,9 +45,9 @@ export default function BpoPage() {
           <h1 className="mt-5 max-w-3xl font-serif text-4xl font-black text-white sm:text-5xl lg:text-6xl">
             Outsourcing solutions for <span className="text-gold-400">businesses worldwide.</span>
           </h1>
-          <p className="mt-6 max-w-2xl text-base leading-relaxed text-gray-400">
-            Financial, Tech, and Customer Service outsourcing — delivered by
-            dedicated teams that operate as a seamless extension of your business.
+          <p className="mt-6 max-w-2xl text-base leading-relaxed text-gray-300">
+            Six full-service practices — delivered by dedicated teams that operate
+            as a seamless extension of your business.
           </p>
           <div className="mt-9 flex flex-wrap gap-4">
             <Link href="/contact" className="btn-gold">
@@ -71,32 +57,57 @@ export default function BpoPage() {
               WhatsApp us
             </a>
           </div>
+
+          {/* Quick category nav */}
+          <div className="mt-10 flex flex-wrap gap-2">
+            {bpoCategories.map((c, i) => {
+              const Icon = icons[i % icons.length];
+              return (
+                <a
+                  key={c.name}
+                  href={`#${slug(c.name)}`}
+                  className="inline-flex items-center gap-2 border border-line bg-card/60 px-3.5 py-2 font-mono text-[11px] uppercase tracking-[0.06em] text-gray-300 transition-colors hover:border-gold-700 hover:text-gold-400"
+                >
+                  <Icon className="h-3.5 w-3.5 text-gold-400" /> {c.name.replace(" Outsourcing", "")}
+                </a>
+              );
+            })}
+          </div>
         </div>
       </section>
 
-      {/* Pillars */}
-      <section className="container-page py-20">
-        <div className="grid gap-6 lg:grid-cols-3">
-          {pillars.map((p) => (
-            <div key={p.title} className="relative flex flex-col border border-line bg-card p-8 transition-colors hover:border-gold-700">
-              <span className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-gold-400 to-transparent" />
-              <span className="inline-flex h-12 w-12 items-center justify-center rounded-sm bg-gold-400/10 text-gold-400">
-                <p.icon className="h-6 w-6" />
-              </span>
-              <h2 className="mt-6 font-serif text-xl font-bold text-white">{p.title}</h2>
-              <p className="mt-3 text-sm leading-relaxed text-gray-400">{p.desc}</p>
-              <ul className="mt-5 space-y-2.5">
-                {p.points.map((pt) => (
-                  <li key={pt} className="flex items-start gap-2.5 text-sm text-gray-400">
-                    <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-gold-400" />
-                    {pt}
-                  </li>
-                ))}
-              </ul>
+      {/* Categories */}
+      {bpoCategories.map((cat, i) => {
+        const Icon = icons[i % icons.length];
+        return (
+          <section key={cat.name} id={slug(cat.name)} className="container-page scroll-mt-24 py-16">
+            <div className="border-b border-line pb-6">
+              <div className="flex items-center gap-4">
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-sm bg-gold-400/10 text-gold-400">
+                  <Icon className="h-6 w-6" />
+                </span>
+                <h2 className="section-title">{cat.name}</h2>
+              </div>
+              <p className="mt-4 max-w-3xl text-gray-300">{cat.desc}</p>
             </div>
-          ))}
-        </div>
-      </section>
+            <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+              {cat.groups.map((g) => (
+                <div key={g.title} className="border border-line bg-card p-6">
+                  <h3 className="font-serif text-base font-bold text-gold-300">{g.title}</h3>
+                  <ul className="mt-4 space-y-2.5">
+                    {g.items.map((it) => (
+                      <li key={it} className="flex items-start gap-2.5 text-sm text-gray-300">
+                        <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-gold-400" />
+                        {it}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </section>
+        );
+      })}
 
       {/* Why us */}
       <section className="border-y border-line bg-surface">
@@ -112,7 +123,7 @@ export default function BpoPage() {
               <div key={w.t} className="border border-line bg-card p-6">
                 <w.icon className="h-6 w-6 text-gold-400" />
                 <h3 className="mt-4 font-serif text-base font-bold text-white">{w.t}</h3>
-                <p className="mt-1.5 text-sm text-gray-500">{w.d}</p>
+                <p className="mt-1.5 text-sm text-gray-300">{w.d}</p>
               </div>
             ))}
           </div>
@@ -125,9 +136,8 @@ export default function BpoPage() {
           <h2 className="mx-auto max-w-2xl font-serif text-3xl font-black text-white">
             Scale your operations with confidence
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-gray-400">
-            Tell us what you need to outsource and we&apos;ll design a team around
-            it.
+          <p className="mx-auto mt-4 max-w-xl text-gray-300">
+            Tell us what you need to outsource and we&apos;ll design a team around it.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link href="/contact" className="btn-gold">
@@ -141,4 +151,8 @@ export default function BpoPage() {
       </section>
     </>
   );
+}
+
+function slug(s: string) {
+  return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 }

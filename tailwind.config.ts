@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: "class",
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -17,11 +18,11 @@ const config: Config = {
         mono: ["var(--font-mono)", "ui-monospace", "SFMono-Regular", "monospace"],
       },
       colors: {
-        // Dark brand surfaces (matches usmanholdings.partners)
-        ink: "#0a0a0a",
-        surface: "#111111",
-        card: "#181818",
-        line: "#2a2a2a",
+        // Dark navy brand surfaces (navy + gold theme)
+        ink: "#081426",
+        surface: "#0b1e39",
+        card: "#0f2545",
+        line: "#1f3a5e",
         // Brand palette
         navy: {
           50: "#f0f5fa",
@@ -86,13 +87,13 @@ const config: Config = {
             inverted: "#030712",
           },
           background: {
-            muted: "#131A2B",
-            subtle: "#1f2937",
-            DEFAULT: "#111827",
+            muted: "#0b1e39",
+            subtle: "#123059",
+            DEFAULT: "#0f2545",
             emphasis: "#d1d5db",
           },
-          border: { DEFAULT: "#1f2937" },
-          ring: { DEFAULT: "#1f2937" },
+          border: { DEFAULT: "#1f3a5e" },
+          ring: { DEFAULT: "#1f3a5e" },
           content: {
             subtle: "#4b5563",
             DEFAULT: "#6b7280",

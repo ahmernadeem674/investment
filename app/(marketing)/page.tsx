@@ -8,6 +8,8 @@ import {
   UserCog,
   CheckCircle2,
   TrendingUp,
+  ShieldCheck,
+  Lock,
 } from "lucide-react";
 import { site, whatsappLink } from "@/lib/site";
 import { images, img } from "@/lib/images";
@@ -20,9 +22,10 @@ const categories = [
 ];
 
 const highlightCalls = [
-  { asset: "Silver (XAG)", note: "Accumulated when undervalued, offloaded near $54.", ret: "+93%" },
-  { asset: "Bitcoin (BTC)", note: "Called the 2022 capitulation bottom at $15,800.", ret: "+337%" },
-  { asset: "Nvidia (NVDA)", note: "Called the AI supercycle at $148/share.", ret: "+558%" },
+  { asset: "Silver (XAG)", note: "Accumulated at $32, offloaded near $110.", ret: "+260%" },
+  { asset: "Bitcoin (BTC)", note: "Called the 2022 capitulation bottom at $15,800.", ret: "+600%" },
+  { asset: "WTI Crude Oil", note: "Accumulation around $56, exited in Spring 2026.", ret: "+81%" },
+  { asset: "Nvidia (NVDA)", note: "Called the AI supercycle at $40/share.", ret: "+432%" },
 ];
 
 export default function HomePage() {
@@ -44,7 +47,7 @@ export default function HomePage() {
           <h1 className="mt-6 max-w-4xl font-serif text-4xl font-black leading-[1.05] text-white sm:text-6xl lg:text-7xl">
             Disciplined conviction across <em className="not-italic text-gold-400">global markets.</em>
           </h1>
-          <p className="mt-7 max-w-xl text-base leading-relaxed text-gray-400">
+          <p className="mt-7 max-w-xl text-base leading-relaxed text-gray-300">
             {site.name} advises individuals, families, and institutions across
             digital assets, financial markets, and real-world ventures — with a
             track record that&apos;s publicly on record.
@@ -58,15 +61,23 @@ export default function HomePage() {
               View track record
             </Link>
           </div>
-          <div className="mt-10 inline-flex items-center gap-2 border border-line px-4 py-2 font-mono text-[10px] uppercase tracking-[0.05em] text-gray-500">
+          <div className="mt-10 inline-flex items-center gap-2 border border-line px-4 py-2 font-mono text-[10px] uppercase tracking-[0.05em] text-gray-300">
             <span className="text-emerald-400">●</span> Every market call verified via public, timestamped X posts
+          </div>
+          <div className="mt-6 flex flex-wrap items-center gap-6 text-sm text-gray-200">
+            <span className="inline-flex items-center gap-2">
+              <ShieldCheck className="h-4 w-4 text-gold-400" /> Fiduciary first
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <Lock className="h-4 w-4 text-gold-400" /> Bank-grade Security
+            </span>
           </div>
         </div>
       </section>
 
       {/* Stats strip */}
       <section className="border-y border-line bg-card">
-        <div className="container-page grid grid-cols-2 gap-y-8 py-12 sm:grid-cols-3 lg:grid-cols-5">
+        <div className="container-page grid grid-cols-2 gap-y-8 py-12 sm:grid-cols-4">
           {site.stats.map((s) => (
             <div key={s.label} className="text-center lg:text-left">
               <p className="font-serif text-4xl font-black text-gold-400">{s.value}</p>
@@ -123,7 +134,7 @@ export default function HomePage() {
               Full track record ↗
             </Link>
           </div>
-          <div className="grid gap-5 md:grid-cols-3">
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {highlightCalls.map((c) => (
               <div key={c.asset} className="border border-line bg-card p-7">
                 <div className="flex items-center justify-between">
@@ -132,7 +143,7 @@ export default function HomePage() {
                     <TrendingUp className="h-4 w-4" /> {c.ret}
                   </span>
                 </div>
-                <p className="mt-4 text-sm italic leading-relaxed text-gray-400">{c.note}</p>
+                <p className="mt-4 text-sm italic leading-relaxed text-gray-300">{c.note}</p>
               </div>
             ))}
           </div>
@@ -166,11 +177,11 @@ export default function HomePage() {
           <h2 className="mx-auto max-w-2xl font-serif text-3xl font-black text-white sm:text-4xl">
             Ready to work with <span className="text-gold-400">the right team?</span>
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-gray-400">
+          <p className="mx-auto mt-4 max-w-xl text-gray-200">
             Disciplined, research-driven advisory across digital assets,
             financial markets, and real-world ventures. Let&apos;s talk.
           </p>
-          <ul className="mx-auto mt-8 flex max-w-2xl flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-gray-400">
+          <ul className="mx-auto mt-8 flex max-w-2xl flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-gray-200">
             {["Independent & conflict-free", "Strictly confidential", "Fiduciary mindset"].map((p) => (
               <li key={p} className="inline-flex items-center gap-2">
                 <CheckCircle2 className="h-4 w-4 text-gold-400" /> {p}

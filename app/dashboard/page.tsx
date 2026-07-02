@@ -52,7 +52,6 @@ export default async function DashboardPage() {
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  // RLS guarantees this only returns THIS investor's holdings.
   const { data, error } = await supabase
     .from("holdings")
     .select("id, symbol, quantity, cost_basis, current_price, accounts(name)")
@@ -69,45 +68,41 @@ export default async function DashboardPage() {
     .map((h) => ({ name: h.symbol, value: h.quantity * h.current_price }))
     .sort((a, b) => b.value - a.value);
 
-  const kpis = [
-    { label: "Total Portfolio Value", value: usd(marketValue), icon: Wallet, color: "text-gold-300", bg: "bg-gold-400/10" },
-    { label: "Total Cost Basis", value: usd(costBasis), icon: Receipt, color: "text-navy-200", bg: "bg-white/5" },
-    { label: "Total Gain / Loss", value: usd(gainLoss), icon: TrendingUp, color: "text-emerald-300", bg: "bg-emerald-400/10", delta: gainLossPct, up: gainLoss >= 0 },
-    { label: "Holdings", value: String(holdings.length), icon: Layers, color: "text-navy-200", bg: "bg-white/5" },
-  ];
-
   const admin = isAdmin(user.email);
 
+  const kpis = [
+    { label: "Total Portfolio Value", value: usd(marketValue), icon: Wallet },
+    { label: "Total Cost Basis", value: usd(costBasis), icon: Receipt },
+    { label: "Total Gain / Loss", value: usd(gainLoss), icon: TrendingUp, delta: gainLossPct, up: gainLoss >= 0 },
+    { label: "Holdings", value: String(holdings.length), icon: Layers },
+  ];
+
   return (
-    <div className="min-h-screen bg-cream">
-      <PortalHeader
-        email={user.email ?? ""}
-        isAdmin={admin}
-        active="dashboard"
-      />
+    <div className="dark min-h-screen bg-ink text-gray-200">
+      <PortalHeader email={user.email ?? ""} isAdmin={admin} active="dashboard" />
 
       <main className="container-page py-8">
         {error && (
-          <div className="mb-6 rounded-md bg-red-50 p-3 text-sm text-red-700">
+          <div className="mb-6 rounded-sm border border-red-500/30 bg-red-500/5 p-3 text-sm text-red-400">
             Error loading holdings: {error.message}
           </div>
         )}
 
-        {/* Hero panel */}
-        <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-navy-950 via-navy-900 to-navy-800 p-8 shadow-xl sm:p-10">
+        {/* Gold-framed hero */}
+        <section className="relative overflow-hidden rounded-2xl border border-gold-600/40 bg-gradient-to-br from-navy-950 via-navy-900 to-navy-800 p-8 shadow-2xl sm:p-10">
           <div
             className="pointer-events-none absolute inset-0 opacity-40"
             style={{
               backgroundImage:
-                "radial-gradient(50% 70% at 90% 0%, rgba(205,160,73,0.30) 0%, rgba(11,31,58,0) 60%), radial-gradient(50% 70% at 0% 100%, rgba(53,102,153,0.40) 0%, rgba(11,31,58,0) 60%)",
+                "radial-gradient(50% 70% at 90% 0%, rgba(205,160,73,0.30) 0%, rgba(8,20,38,0) 60%), radial-gradient(50% 70% at 0% 100%, rgba(205,160,73,0.15) 0%, rgba(8,20,38,0) 60%)",
             }}
           />
           <div className="relative flex flex-wrap items-end justify-between gap-6">
             <div>
-              <p className="text-sm font-medium uppercase tracking-wider text-navy-300">
-                Total portfolio value
+              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-gold-400">
+                Total Portfolio Value
               </p>
-              <p className="mt-2 font-serif text-4xl font-bold text-white sm:text-5xl">
+              <p className="mt-2 font-serif text-4xl font-black text-white sm:text-5xl">
                 {usd(marketValue)}
               </p>
               <p
@@ -115,45 +110,31 @@ export default async function DashboardPage() {
                   gainLoss >= 0 ? "text-emerald-400" : "text-red-400"
                 }`}
               >
-                {gainLoss >= 0 ? (
-                  <ArrowUpRight className="h-4 w-4" />
-                ) : (
-                  <ArrowDownRight className="h-4 w-4" />
-                )}
+                {gainLoss >= 0 ? <ArrowUpRight className="h-4 w-4" /> : <ArrowDownRight className="h-4 w-4" />}
                 {usd(gainLoss)} ({pct(gainLossPct)}) all-time
               </p>
             </div>
             <div className="text-right">
-              <p className="text-xs uppercase tracking-wider text-navy-400">
-                Welcome back
-              </p>
-              <p className="mt-1 text-sm font-medium text-navy-100">
-                {user.email}
-              </p>
+              <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-gray-500">Welcome back</p>
+              <p className="mt-1 text-sm font-medium text-gray-200">{user.email}</p>
             </div>
           </div>
 
           {/* KPI strip */}
-          <div className="relative mt-8 grid gap-px overflow-hidden rounded-xl bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="relative mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {kpis.map((k) => (
-              <div key={k.label} className="bg-navy-950/40 p-5 backdrop-blur-sm">
+              <div key={k.label} className="rounded-lg border border-gold-700/30 bg-ink/40 p-5 backdrop-blur-sm">
                 <div className="flex items-center justify-between">
-                  <span
-                    className={`inline-flex h-9 w-9 items-center justify-center rounded-lg ${k.bg} ${k.color}`}
-                  >
+                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-sm bg-gold-400/10 text-gold-400">
                     <k.icon className="h-5 w-5" />
                   </span>
                   {typeof k.delta === "number" && (
-                    <span
-                      className={`text-xs font-semibold ${
-                        k.up ? "text-emerald-400" : "text-red-400"
-                      }`}
-                    >
+                    <span className={`font-mono text-xs font-semibold ${k.up ? "text-emerald-400" : "text-red-400"}`}>
                       {pct(k.delta)}
                     </span>
                   )}
                 </div>
-                <p className="mt-3 text-xs text-navy-300">{k.label}</p>
+                <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.08em] text-gray-400">{k.label}</p>
                 <p className="mt-0.5 text-xl font-bold text-white">{k.value}</p>
               </div>
             ))}
@@ -162,33 +143,31 @@ export default async function DashboardPage() {
 
         {/* Performance + allocation */}
         <div className="mt-6 grid gap-6 lg:grid-cols-3">
-          <Card className="lg:col-span-2">
+          <Card className="border-gold-700/30 lg:col-span-2">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-semibold text-navy-900">Performance</p>
-                <p className="text-xs text-navy-500">Trailing 12 months</p>
+                <p className="text-sm font-semibold text-white">Performance</p>
+                <p className="font-mono text-[11px] text-gray-400">Trailing 12 months</p>
               </div>
-              <span className="rounded-full bg-navy-50 px-2.5 py-1 text-xs font-medium text-navy-500">
+              <span className="rounded-full border border-gold-700/40 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.06em] text-gold-300">
                 Illustrative
               </span>
             </div>
             <PerformanceChart endValue={marketValue} />
           </Card>
 
-          <Card>
-            <p className="text-sm font-semibold text-navy-900">Allocation</p>
-            <p className="text-xs text-navy-500">By market value</p>
+          <Card className="border-gold-700/30">
+            <p className="text-sm font-semibold text-white">Allocation</p>
+            <p className="font-mono text-[11px] text-gray-400">By market value</p>
             <AllocationChart data={allocation} />
           </Card>
         </div>
 
-        {/* Holdings table */}
-        <Card className="mt-6">
-          <p className="text-sm font-semibold text-navy-900">Holdings</p>
+        {/* Holdings */}
+        <Card className="mt-6 border-gold-700/30">
+          <p className="text-sm font-semibold text-white">Holdings</p>
           {holdings.length === 0 ? (
-            <p className="mt-4 text-sm text-navy-500">
-              No holdings found for your account yet.
-            </p>
+            <p className="mt-4 text-sm text-gray-400">No holdings found for your account yet.</p>
           ) : (
             <Table className="mt-4">
               <TableHead>
@@ -210,9 +189,7 @@ export default async function DashboardPage() {
                   const glp = cv > 0 ? gl / cv : 0;
                   return (
                     <TableRow key={h.id}>
-                      <TableCell className="font-semibold text-navy-900">
-                        {h.symbol}
-                      </TableCell>
+                      <TableCell className="font-semibold text-gold-400">{h.symbol}</TableCell>
                       <TableCell>{h.accounts?.name ?? "—"}</TableCell>
                       <TableCell className="text-right">{h.quantity}</TableCell>
                       <TableCell className="text-right">{usd(h.cost_basis)}</TableCell>

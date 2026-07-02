@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { site } from "@/lib/site";
+import { LogoWordmark } from "@/components/brand/logo";
 
 export function SiteHeader({ isAuthed }: { isAuthed: boolean }) {
   const [open, setOpen] = useState(false);
@@ -16,13 +17,8 @@ export function SiteHeader({ isAuthed }: { isAuthed: boolean }) {
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-ink/95 backdrop-blur-md">
       <nav className="container-page flex h-[72px] items-center justify-between">
-        <Link href="/" className="flex items-center gap-2.5" aria-label={site.name}>
-          <span className="flex h-8 w-8 items-center justify-center rounded-sm bg-gold-400 font-serif text-base font-bold text-ink">
-            U
-          </span>
-          <span className="font-serif text-lg font-bold tracking-wide text-gold-400">
-            {site.name}
-          </span>
+        <Link href="/" aria-label={site.name}>
+          <LogoWordmark markClass="h-10 w-10" />
         </Link>
 
         {/* Desktop nav */}
@@ -44,7 +40,7 @@ export function SiteHeader({ isAuthed }: { isAuthed: boolean }) {
             href={isAuthed ? "/dashboard" : "/login"}
             className="rounded-sm border border-gold-500/70 px-5 py-2 font-mono text-[12px] uppercase tracking-[0.08em] text-gold-300 transition-colors hover:bg-gold-400 hover:text-ink"
           >
-            {isAuthed ? "Dashboard" : "Investor Login"}
+            {isAuthed ? "Dashboard" : "Client Login"}
           </Link>
         </div>
 
@@ -76,7 +72,7 @@ export function SiteHeader({ isAuthed }: { isAuthed: boolean }) {
               onClick={() => setOpen(false)}
               className="mt-2 rounded-sm border border-gold-500/70 px-3 py-2.5 text-center font-mono text-[12px] uppercase tracking-[0.08em] text-gold-300 hover:bg-gold-400 hover:text-ink"
             >
-              {isAuthed ? "Dashboard" : "Investor Login"}
+              {isAuthed ? "Dashboard" : "Client Login"}
             </Link>
           </div>
         </div>

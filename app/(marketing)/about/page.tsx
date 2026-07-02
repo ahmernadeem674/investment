@@ -72,8 +72,8 @@ export default function AboutPage() {
                 scrutiny at any time.
               </p>
               <p>
-                That same year, {site.founder} became an Official Partner with
-                MEXC, one of the world&apos;s leading crypto exchanges, and called
+                In 2022, {site.founder} became an Official Partner with MEXC, one
+                of the world&apos;s leading crypto exchanges, and called
                 Bitcoin&apos;s bear-market bottom publicly as the market
                 capitulated. What followed was a multi-year track record across
                 crypto, equities, metals, and commodities — built not on

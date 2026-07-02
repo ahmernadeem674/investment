@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { LogOut, LayoutDashboard, Inbox } from "lucide-react";
 import { site } from "@/lib/site";
+import { LogoMark } from "@/components/brand/logo";
 
-// Shared top bar for the protected portal. `active` highlights the current nav
-// item; the Inquiries link only renders for admins.
+// Shared top bar for the protected portal (navy + gold). `active` highlights
+// the current nav item; the Inquiries link only renders for admins.
 export function PortalHeader({
   email,
   isAdmin,
@@ -14,21 +15,19 @@ export function PortalHeader({
   active: "dashboard" | "inquiries";
 }) {
   const linkCls = (isActive: boolean) =>
-    `inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+    `inline-flex items-center gap-1.5 rounded-sm px-3 py-1.5 font-mono text-[12px] uppercase tracking-[0.06em] transition-colors ${
       isActive
-        ? "bg-navy-50 text-navy-900"
-        : "text-navy-600 hover:bg-navy-50 hover:text-navy-900"
+        ? "border border-gold-500/50 bg-gold-400/10 text-gold-300"
+        : "text-gray-400 hover:text-gold-300"
     }`;
 
   return (
-    <header className="sticky top-0 z-40 border-b border-navy-100 bg-white/90 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-gold-700/40 bg-ink/95 backdrop-blur">
       <div className="container-page flex h-16 items-center justify-between">
         <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-sm bg-navy-900 font-serif text-base font-bold text-gold-300">
-              U
-            </span>
-            <span className="font-serif text-lg font-bold text-navy-900">
+          <Link href="/" aria-label={site.name} className="flex items-center gap-2.5">
+            <LogoMark className="h-9 w-9" />
+            <span className="font-serif text-lg font-bold text-gold-400">
               {site.name}
             </span>
           </Link>
@@ -38,10 +37,7 @@ export function PortalHeader({
               <LayoutDashboard className="h-4 w-4" /> Dashboard
             </Link>
             {isAdmin && (
-              <Link
-                href="/dashboard/inquiries"
-                className={linkCls(active === "inquiries")}
-              >
+              <Link href="/dashboard/inquiries" className={linkCls(active === "inquiries")}>
                 <Inbox className="h-4 w-4" /> Inquiries
               </Link>
             )}
@@ -49,11 +45,11 @@ export function PortalHeader({
         </div>
 
         <div className="flex items-center gap-4">
-          <span className="hidden text-sm text-navy-500 sm:inline">{email}</span>
+          <span className="hidden font-mono text-[11px] text-gray-500 sm:inline">{email}</span>
           <form action="/auth/signout" method="post">
             <button
               type="submit"
-              className="inline-flex items-center gap-1.5 rounded-md border border-navy-200 bg-white px-3 py-1.5 text-sm font-medium text-navy-700 transition-colors hover:bg-navy-50"
+              className="inline-flex items-center gap-1.5 rounded-sm border border-gold-500/50 px-3 py-1.5 font-mono text-[12px] uppercase tracking-[0.06em] text-gold-300 transition-colors hover:bg-gold-400 hover:text-ink"
             >
               <LogOut className="h-4 w-4" /> Sign out
             </button>

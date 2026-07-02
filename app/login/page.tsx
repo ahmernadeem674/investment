@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { ArrowLeft, ShieldCheck, Lock } from "lucide-react";
 import { site } from "@/lib/site";
+import { LogoMark } from "@/components/brand/logo";
 import { signIn } from "./actions";
 
-export const metadata = { title: "Investor Login" };
+export const metadata = { title: "Client Login" };
 
 export default function LoginPage({
   searchParams,
@@ -28,10 +29,8 @@ export default function LoginPage({
           className="relative flex items-center gap-3"
           aria-label={site.name}
         >
-          <span className="flex h-9 w-9 items-center justify-center rounded-sm bg-white/10 font-serif text-lg font-bold text-gold-300">
-            U
-          </span>
-          <span className="font-serif text-xl font-bold text-white">
+          <LogoMark className="h-11 w-11" />
+          <span className="font-serif text-xl font-bold text-gold-300">
             {site.name}
           </span>
         </Link>
@@ -58,8 +57,8 @@ export default function LoginPage({
         </p>
       </div>
 
-      {/* Form panel */}
-      <div className="flex flex-col items-center justify-center bg-cream p-6">
+      {/* Form panel (off-white) */}
+      <div className="flex flex-col items-center justify-center bg-[#f4f1ea] p-6">
         <div className="w-full max-w-sm">
           <Link
             href="/"
@@ -68,9 +67,12 @@ export default function LoginPage({
             <ArrowLeft className="h-4 w-4" /> Back to site
           </Link>
 
-          <h1 className="text-2xl font-bold text-navy-900">Investor Login</h1>
-          <p className="mt-1.5 text-sm text-navy-500">
-            Sign in to access your investor portal.
+          {/* Logo (shown on the form side too, esp. on mobile) */}
+          <LogoMark className="mb-5 h-12 w-12 lg:hidden" />
+
+          <h1 className="text-2xl font-bold text-navy-900">Client Login</h1>
+          <p className="mt-1.5 text-sm text-navy-600">
+            Sign in to access your client portal.
           </p>
 
           {error && (

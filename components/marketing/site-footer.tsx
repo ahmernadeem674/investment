@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
+import { Mail, Phone, MapPin, MessageCircle, Building2 } from "lucide-react";
 import { site, whatsappLink } from "@/lib/site";
+import { LogoWordmark } from "@/components/brand/logo";
 
 export function SiteFooter() {
   return (
@@ -8,15 +9,8 @@ export function SiteFooter() {
       <div className="container-page py-16">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-2">
-            <div className="flex items-center gap-2.5">
-              <span className="flex h-8 w-8 items-center justify-center rounded-sm bg-gold-400 font-serif text-base font-bold text-ink">
-                U
-              </span>
-              <span className="font-serif text-lg font-bold text-gold-400">
-                {site.name}
-              </span>
-            </div>
-            <p className="mt-4 max-w-md text-sm leading-relaxed text-gray-500">
+            <LogoWordmark markClass="h-10 w-10" />
+            <p className="mt-4 max-w-md text-sm leading-relaxed text-gray-400">
               {site.description}
             </p>
             <div className="mt-6 flex gap-3">
@@ -59,7 +53,7 @@ export function SiteFooter() {
                   href="/login"
                   className="text-gray-500 transition-colors hover:text-gold-400"
                 >
-                  Investor Login
+                  Client Login
                 </Link>
               </li>
             </ul>
@@ -99,9 +93,20 @@ export function SiteFooter() {
                   <span>{site.phone}</span>
                 </a>
               </li>
-              <li className="flex items-start gap-3 text-gray-500">
-                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold-500" />
-                <span>{site.address}</span>
+              <li>
+                <a
+                  href={site.mapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-start gap-3 text-gray-400 transition-colors hover:text-gold-400"
+                >
+                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold-500" />
+                  <span>{site.office}</span>
+                </a>
+              </li>
+              <li className="flex items-start gap-3 text-gray-400">
+                <Building2 className="mt-0.5 h-4 w-4 shrink-0 text-gold-500" />
+                <span>Registered Office: {site.registeredOffice}</span>
               </li>
             </ul>
           </div>

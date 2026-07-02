@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Mail, Phone, MapPin, Clock, MessageCircle } from "lucide-react";
+import { Mail, Phone, MapPin, Clock, MessageCircle, Building2 } from "lucide-react";
 import { site, whatsappLink } from "@/lib/site";
 import { ContactForm } from "./contact-form";
 
@@ -46,8 +46,9 @@ export default function ContactPage() {
             <ul className="mt-8 space-y-6">
               <ContactItem icon={Mail} label="Email" value={site.email} href={`mailto:${site.email}`} />
               <ContactItem icon={Phone} label="Phone" value={site.phone} href={`tel:${site.phoneHref}`} />
-              <ContactItem icon={MapPin} label="Office" value={site.address} />
-              <ContactItem icon={Clock} label="Hours" value="Mon–Fri, 9:00 – 18:00 (PKT)" />
+              <ContactItem icon={MapPin} label="Office" value={site.office} href={site.mapsUrl} />
+              <ContactItem icon={Building2} label="Registered Office" value={site.registeredOffice} />
+              <ContactItem icon={Clock} label="Hours" value="Mon–Fri, 9:00 – 17:00 (PKT)" />
             </ul>
           </div>
 
